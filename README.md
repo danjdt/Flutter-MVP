@@ -1,4 +1,3 @@
-# flutter_mvp
 # Flutter-MVP
 Flutter MVP Sample
 
