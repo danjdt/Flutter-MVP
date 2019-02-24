@@ -3,12 +3,13 @@ import 'package:flutter_mvp/data/remote/list_character_request.dart';
 import 'package:flutter_mvp/data/remote/marvel_api.dart';
 
 abstract class CharacterListViewContract {
-  void onLoadComplete(List<Character> items);
+  void displayCharacters(List<Character> items);
 
-  void onLoadError();
+  void displayError();
 }
 
 class CharacterListPresenter {
+
   CharacterListViewContract _view;
   MarvelApi _api;
 
@@ -24,10 +25,10 @@ class CharacterListPresenter {
     request.setName(characterName);
 
     _api.fetchCharacters(request)
-        .then((contacts) => _view.onLoadComplete(contacts))
+        .then((characters) => _view.displayCharacters(characters))
         .catchError((onError) {
       print(onError);
-      _view.onLoadError();
+      _view.displayError();
     });
   }
 }

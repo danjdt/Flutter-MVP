@@ -55,7 +55,7 @@ class _CharacterListState extends State<CharacterList>
   }
 
   @override
-  void onLoadComplete(List<Character> items) {
+  void displayCharacters(List<Character> items) {
     setState(() {
       if (items != null) {
         _characters.clear();
@@ -66,7 +66,7 @@ class _CharacterListState extends State<CharacterList>
   }
 
   @override
-  void onLoadError() {
+  void displayError() {
     setState(() {
       _isLoading = false;
     });
@@ -128,6 +128,9 @@ class _CharacterListState extends State<CharacterList>
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.transparent),
                         ),
+                        disabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.transparent),
+                        ),
                         hintStyle:
                             new TextStyle(fontSize: 20, color: Colors.white)),
                   );
@@ -154,7 +157,9 @@ class _CharacterListState extends State<CharacterList>
         "Marvel Character List",
         style: new TextStyle(color: Colors.white),
       );
+      _presenter.loadCharacterList(null);
       _searchQuery.clear();
+
     });
   }
 }
