@@ -39,6 +39,10 @@ class _CharacterListState extends State<CharacterList>
   _setListeners() {
     _searchQuery.addListener(() {
       String searchText = _searchQuery.text;
+      setState(() {
+        _isLoading = true;
+      });
+
       _presenter.loadCharacterList(searchText);
     });
   }
@@ -53,7 +57,7 @@ class _CharacterListState extends State<CharacterList>
   @override
   void onLoadComplete(List<Character> items) {
     setState(() {
-      if(items != null) {
+      if (items != null) {
         _characters.clear();
         _characters.addAll(items);
         _isLoading = false;
@@ -76,7 +80,7 @@ class _CharacterListState extends State<CharacterList>
 
   Widget _buildBody(BuildContext context) {
     var widget;
-    if (_isLoading && _characters.isEmpty) {
+    if (_isLoading) {
       widget = Center(
           child: Padding(
               padding: EdgeInsets.only(left: 16.0, right: 16.0),
@@ -112,12 +116,20 @@ class _CharacterListState extends State<CharacterList>
                   appBarTitle = new TextField(
                     controller: _searchQuery,
                     style: new TextStyle(
+                      fontSize: 20,
                       color: Colors.white,
                     ),
                     decoration: new InputDecoration(
                         prefixIcon: new Icon(Icons.search, color: Colors.white),
                         hintText: "Search...",
-                        hintStyle: new TextStyle(color: Colors.white)),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.transparent),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.transparent),
+                        ),
+                        hintStyle:
+                            new TextStyle(fontSize: 20, color: Colors.white)),
                   );
                 } else {
                   _handleSearchEnd();
