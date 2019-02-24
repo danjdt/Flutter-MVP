@@ -22,6 +22,12 @@ class ListCharacterRequest extends GetRequest {
     setParam("limit", "${limit <= 100 ? limit : 100}");
   }
 
+  setName(String name) {
+    if(name != null) {
+      setParam("nameStartsWith", name);
+    }
+  }
+
   setParam(String key, String value) {
     if(params.isNotEmpty) {
       params += "&";
