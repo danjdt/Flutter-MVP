@@ -14,11 +14,6 @@ class Character {
         name = "${map['name']}",
         description = "${map['description']}",
         thumbnail = Thumbnail.fromMap(map["thumbnail"]);
-
-  @override
-  fromMap(Map<String, dynamic> map) {
-    return Character.fromMap(map);
-  }
 }
 
 class FetchDataException implements Exception {

@@ -1,5 +1,5 @@
 name: flutter_mvp
-description: A new Flutter application.
+description: A Simple Flutter app using MVP pattern that lists marvel character names using Marvel's public API.
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43

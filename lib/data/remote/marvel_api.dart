@@ -16,27 +16,38 @@ class MarvelApi {
 
   int ts = new DateTime.now().millisecondsSinceEpoch;
 
+  bool _isFetching = false;
+
   Future<List<Character>> fetchCharacters(ListCharacterRequest request) async {
-    ts = new DateTime.now().millisecondsSinceEpoch;
-    print(_baseUrl + request.getEndPoint() + "?${request.getParams()}&ts=$ts&apikey=$publicKey&hash=${hash()}");
-    final response =  await http.get(_baseUrl + request.getEndPoint() + "?${request.getParams()}&ts=$ts&apikey=$publicKey&hash=${hash()}");
-    final items = get(response);
-    return items.map((raw) => Character.fromMap(raw)).toList();
+    if (!_isFetching) {
+      _isFetching = true;
+      ts = new DateTime.now().millisecondsSinceEpoch;
+      final response = await http.get(_baseUrl + request.getEndPoint() +
+          "?${request.getParams()}&ts=$ts&apikey=$publicKey&hash=${hash()}");
+      _isFetching = false;
+      final items = parseResult(response);
+      return items.map((raw) => Character.fromMap(raw)).toList();
+    }
+
+    return null;
   }
 
-  List get(http.Response response) {
+  List parseResult(http.Response response) {
     final jsonBody = response.body;
     final statusCode = response.statusCode;
 
-    print(jsonBody.toString());
-
     if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
-      throw FetchDataException(
-          "Error [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
+      handleError(response);
     }
 
     final container = _decoder.convert(jsonBody);
     return container["data"]["results"];
+  }
+
+  handleError(http.Response response) {
+    final statusCode = response.statusCode;
+    throw FetchDataException(
+        "Error [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
   }
 
   hash() {

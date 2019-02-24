@@ -16,11 +16,12 @@ class CharacterListPresenter {
     _api = new MarvelApi();
   }
 
-  void loadCharacterList() {
+  void loadCharacterList(String characterName) {
     assert(_view != null);
 
     ListCharacterRequest request = new ListCharacterRequest();
-    request.setLimit(100);
+    request.setLimit(25);
+    request.setName(characterName);
 
     _api.fetchCharacters(request)
         .then((contacts) => _view.onLoadComplete(contacts))
